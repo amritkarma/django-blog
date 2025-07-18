@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Privacy -
+Aera{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+{% block robots %}noindex nofollow{% endblock robots %}
+
+<!-- Open Graph / Facebook -->
+{% block fbtype %}website{% endblock fbtype %}
+
+{% block fburl %}{{HOST_DOMAIN_URL}}{% endblock fburl %}
+
+{% block fbtitle %}Privacy -
+Aera{% endblock fbtitle %}
+
+{% block fbdescription %}{% endblock fbdescription %}
+
+{% block fbimage %}{{HOST_DOMAIN_URL}}{% static 'images/apple-touch-icon.png' %}{% endblock fbimage %}
+
+<!-- Twitter -->
+{% block twittercard %}summary_large_image{% endblock twittercard %}
+
+{% block twitterurl %}{{HOST_DOMAIN_URL}}{% endblock twitterurl %}
+
+{% block twittertitle %}Privacy - Aera{% endblock twittertitle %}
+
+{% block twitterdescription %}{% endblock twitterdescription %}
+
+{% block twitterimage %}{{HOST_DOMAIN_URL}}{% static 'images/apple-touch-icon.png' %}{% endblock twitterimage %}
+
+
+{% block content %}
+<section class="w-full bg-white dark:bg-black dark:text-white py-16">
+    <div class="mx-auto px-4 md:w-1/2 lg:w-1/2 xl:w-1/2">
+        <h1 class="mb-2 text-xl md:text-2xl lg:text-3xl xl:text-3xl font-bold">Privacy Policy</h1>
+        <p class="">Your privacy policy here</p>
+    </div>
+</section>
+{% endblock content %}

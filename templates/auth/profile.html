@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - Aera{% endblock title %}
+
+{% block content %}
+<div class="px-6 py-6">
+    <div class="">
+        <div class="px-6 py-2 flex flex-col items-start justify-center rounded-xl shadow-lg">
+            <h2 class="text-lg text-zinc-950 dark:text-white font-semibold">Profile</h2>
+        </div>
+        <div class="mt-6 w-full px-4 py-4 dark:text-white rounded-xl">
+            <div class="w-full md:max-w-2xl mx-auto dark:text-white  md:px-6 md:py-6 text-black">
+                <div class="w-full my-6 space-y-4">
+                    {% if object.user.profile.profile_image %}
+                    <img src="{{object.user.profile.profile_image.url}}" alt="{{object.user.username}}"
+                        class="w-12 h-12 object-cover rounded-full">
+                    {% endif %}
+
+                    <a href="{% url 'auth:profileupdate' request.user.profile.slug %}"
+                        class="w-fit px-4 py-2 bg-white hover:bg-zinc-600 text-black hover:text-white text-sm font-medium flex items-center gap-1 rounded-lg transition-colors duration-200">
+                        <span class="">update Profile</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

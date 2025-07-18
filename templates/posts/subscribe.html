@@ -1,0 +1,46 @@
+<section class="w-full py-2">
+    <div class="max-w-6xl mx-auto px-4 lg:px-0 xl:px-0">
+        <div class="max-w-sm mx-auto flex flex-col gap-5 items-start justify-center">
+            <div class="">
+                <h2 class="text-lg font-medium">Join Our Newsletter</h2>
+                <p class="text-sm">New posts just dropped. Don't miss a beat — subscribe now.</p>
+            </div>
+            <div class="w-full px-2 md:px-0 flex flex-col items-center justify-center">
+                <form action="" method="post"
+                    class="subscribeform w-full flex flex-col items-center justify-center gap-4">
+                    {% csrf_token %}
+                    <input type="text" name="name"
+                        class="w-full px-4 py-2 bg-zinc-900 border border-zinc-400 rounded-xl" required
+                        placeholder="Name">
+                    <input type="email" name="email"
+                        class="w-full px-4 py-2 bg-zinc-900 border border-zinc-400 rounded-xl" required
+                        placeholder="Email">
+                    <button type="submit"
+                        class="subscribeformbutton g-recaptcha px-4 py-2.5 -ml-0.5 text-sm text-black font-semibold bg-white hover:bg-zinc-400 dark:hover:bg-zinc-400 transition duration-20 flex flex-row items-center rounded-xl">
+                        <span class="subscribedefault flex flex-row items-center">
+                            Subscribe
+                        </span>
+                        <span class="subscribesending hidden w-full h-full flex flex-row items-center justify-between">
+                            Sending
+                            <div class="px-2 animate-spin">
+                                <div
+                                    class="w-5 h-5 bg-transparent border-2 border-b-white border-white/20 rounded-full">
+                                </div>
+                            </div>
+                        </span>
+                        <span class="subscribedone hidden w-full h-full flex flex-row items-center justify-between">
+                            Done
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 ml-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </span>
+                    </button>
+                </form>
+                <div class="subscribemessage px-2 py-2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

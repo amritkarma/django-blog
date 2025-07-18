@@ -1,0 +1,9 @@
+{% spaceless %}{% if RobotsTxt.content %}{{ RobotsTxt.content }}{% else %}
+User-agent: *
+Allow: /
+Disallow: /privacy/
+
+Sitemap: {{HOST_DOMAIN_URL}}ponents/sitemap.xml
+
+{% endif %}
+{% endspaceless %}

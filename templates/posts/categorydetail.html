@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block canonical %}{{HOST_DOMAIN_URL}}{{request.path}}{% endblock canonical %}
+{% block styles %}
+<link rel="preload" href="{% if object.image %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endif %}" as="image" />
+{% endblock styles %}
+{% block scripts %}
+{% endblock scripts %}
+
+{% block title %}{{object}} -
+Aera{% endblock title %}
+{% block description %}{% if object.seo_description %}{{ object.seo_description }}{% else %}
+{{object.title}} - Aera
+{% endif %}{% endblock description %}
+{% block robots %}index follow{% endblock robots %}
+<!-- Open Graph / Facebook -->
+{% block fbtype %}article{% endblock fbtype %}
+{% block fburl %}{{HOST_DOMAIN_URL}}{{object.get_absolute_url}}{% endblock fburl %}
+{% block fbtitle %}{% if object.seo_title %}{{ object.seo_title }} - Aera{% else %}{{object.title}} -
+Aera{% endif %}{% endblock fbtitle %}
+{% block fbdescription %}{% if object.seo_description %}{{ object.seo_description }}{% else %}{{object.title}} - Aera
+{% endif %}{% endblock fbdescription %}
+{% block fbimage %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endblock fbimage %}
+<!-- Twitter -->
+{% block twittercard %}summary_large_image{% endblock twittercard %}
+{% block twitterurl %}{{HOST_DOMAIN_URL}}{{object.get_absolute_url}}{% endblock twitterurl %}
+{% block twittertitle %}{% if object.seo_title %}{{ object.seo_title }} - Aera{% else %}{{object.title}} -
+Aera{% endif %}{% endblock twittertitle %}
+{% block twitterdescription %}{% if object.seo_description %}{{ object.seo_description }}{% else %}{{object.title}} -
+Aera
+{% endif %}{% endblock twitterdescription %}
+{% block twitterimage %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endblock twitterimage %}
+
+
+
+{% block content %}
+
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4 lg:px-0 xl:px-0">
+        <!-- heading and paragraph -->
+        <div class="w-full mb-12 space-y-2">
+            <h1 class="text-4xl text-center font-medium">{{ object }}</h1>
+        </div>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            {% for post in object_list %}
+            <div
+                class="relative rounded-xl bg-white dark:bg-black dark:text-white border border-gray-200 dark:border-zinc-900 transition duration-200 shadow-lg hover:shadow-2xl overflow-hidden">
+                <a href="{% url 'posts:postdetail' post.slug %}" title="{{ post.title }}" class="group">
+                    <article class="relative rounded-lg overflow-hidden">
+                        <img class="w-full h-80 object-cover object-center group-hover:scale-110 transition-all duration-200"
+                            src="{% if post.image %}{{post.image.url}}{% endif %}" alt="{{ post.title }}">
+                        <div
+                            class="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent">
+                        </div>
+                        <div class="absolute bottom-0 left-0 px-4 py-4">
+                            <div class="mt-2 flex flex-col items-start gap-2">
+                                <div class="flex flex-row items-center gap-2">
+                                    <img class="w-10 h-10 object-cover object-center rounded-full ring-2 ring-gray-600"
+                                        src="{% if post.image %}{{post.image.url}}{% endif %}" alt="{{ post.title }}">
+                                    <span class="text-gray-200 font-medium">{{ post.author }}</span>
+                                </div>
+                                <div class="flex flex-row items-center gap-2">
+                                    <p class="text-sm text-gray-200 font-medium bg-gray-400/60 px-2 py-1 rounded-full">
+                                        {{ post.created|timesince }} Ago</p>
+                                    {% if post.category %}<p
+                                        class="text-xs text-gray-200 bg-gray-200/60 px-2 py-1 rounded-full font-medium">
+                                        {{ post.category }}</p>{% endif %}
+                                </div>
+                            </div>
+                            <h3 class="text-xl text-white group-hover:text-gray-400 font-medium mt-2 cursor-pointer">
+                                {{ post.title|truncatechars:50 }}</h3>
+                        </div>
+                    </article>
+                </a>
+            </div>
+            {% empty %}
+            <div class="text-center text-zinc-500 mt-8 col-span-full">
+                {% if search %}
+                <p>No posts found matching "<strong>{{ search }}</strong>".</p>
+                {% else %}
+                <p>There are no posts available.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if is_paginated %}
+    <nav class="mt-6 flex items-center justify-between" aria-label="Pagination">
+        <div class="flex-1 flex justify-between sm:justify-start gap-4">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                ← Previous
+            </a>
+            {% else %}
+            <span
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-md cursor-not-allowed">
+                ← Previous
+            </span>
+            {% endif %}
+
+            <span class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                Next →
+            </a>
+            {% else %}
+            <span
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-md cursor-not-allowed">
+                Next →
+            </span>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+</section>
+
+
+{% endblock content %}

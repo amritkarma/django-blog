@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Settings - Aera{% endblock title %}
+
+{% block content %}
+<div class="px-6 py-6">
+    <div class="">
+        <div class="px-6 py-2 dark:text-white flex flex-col items-start justify-center rounded-xl shadow-lg">
+            <h2 class="text-lg text-zinc-950 font-semibold">Settings</h2>
+        </div>
+        <div class="mt-6 w-full px-4 py-4 dark:text-white rounded-xl">
+            <div class="w-full md:max-w-2xl mx-auto dark:text-white md:px-6 md:py-6 text-black">
+                <form action="{% url 'auth:settings' request.user.pk %}" method="post" class="mx-auto grid grid-cols-1 gap-4 md:grid-cols-6">
+                    {% csrf_token %}
+                    {{form.errors}}
+                    <div class="col-span-6 md:col-span-3 space-y-1">
+                        <label for="first_name" class="block text-sm font-medium">Name</label>
+                        <input type="text" name="first_name" value="{{ form.first_name.value }}" id="first_name"
+                            class="w-full block rounded-lg border border-gray-400 px-2 py-2" placeholder="Tim">
+                    </div>
+                    <div class="col-span-6 md:col-span-3 space-y-1">
+                        <label for="last_name" class="block text-sm font-medium">Last Name</label>
+                        <input type="text" name="last_name" value="{{ form.last_name.value }}" id="last_name"
+                            class="w-full block rounded-lg border border-gray-400 px-2 py-2" placeholder="Cook">
+                    </div>
+                    <div class="col-span-6 md:col-span-4 space-y-1">
+                        <label for="email" class="block text-sm font-medium">Email</label>
+                        <input type="email" name="email" value="{{ form.email.value }}" id="email"
+                            class="w-full block rounded-lg border border-gray-400 px-2 py-2"
+                            placeholder="messi@Aera.com">
+                    </div>
+                    <div class="col-span-6 md:col-span-4 space-y-1">
+                        <label for="username" class="block text-sm font-medium">Username</label>
+                        <input type="text" name="username" value="{{ form.username.value }}" id="username"
+                            class="w-full block rounded-lg border border-gray-400 px-2 py-2" placeholder="timcook">
+                    </div>
+                    <hr class="col-span-6 my-6">
+                    <div class="col-span-full place-self-end flex items-center space-x-4">
+                        <button type="submit"
+                            class="w-full rounded-lg bg-gray-950 hover:bg-gray-900 px-4 py-2 text-white font-semibold">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

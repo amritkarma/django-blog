@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block canonical %}{{HOST_DOMAIN_URL}}{% endblock canonical %}
+{% block styles %}
+{% endblock styles %}
+{% block scripts %}
+{% endblock scripts %}
+
+{% block title %}Contact - Aera{% endblock title %}
+{% block description %}Contact -
+Aera{% endblock description %}
+{% block robots %}index follow{% endblock robots %}
+<!-- Open Graph / Facebook -->
+{% block fbtype %}website{% endblock fbtype %}
+{% block fburl %}{{HOST_DOMAIN_URL}}{% endblock fburl %}
+{% block fbtitle %}Contact - Aera{% endblock fbtitle %}
+{% block fbdescription %}Contact -
+Aera{% endblock fbdescription %}
+{% block fbimage %}{{HOST_DOMAIN_URL}}{% static 'images/Logo-Aera.png' %}{% endblock fbimage %}
+<!-- Twitter -->
+{% block twittercard %}summary_large_image{% endblock twittercard %}
+{% block twitterurl %}{{HOST_DOMAIN_URL}}{% endblock twitterurl %}
+{% block twittertitle %}Contact -
+Aera{% endblock twittertitle %}
+{% block twitterdescription %}Contact -
+Aera{% endblock twitterdescription %}
+{% block twitterimage %}{{HOST_DOMAIN_URL}}{% static 'images/Logo-Aera.png' %}{% endblock twitterimage %}
+
+
+{% block content %}
+<section
+    class="w-full bg-white dark:bg-black dark:text-white transition-all duration-200 px-4 md:px-2 lg:px-0 xl:px-0 py-7">
+    <div class="max-w-7xl mx-auto px-4 md:px-0 lg:px-0 xl:px-0">
+
+        <h2 class="text-center text-4xl font-medium">
+            Contact Us
+        </h2>
+
+        <form action="" method="post" id="contact-form" class="max-w-md mx-auto mt-7">
+            {% csrf_token %}
+            {{ form.fields.errors }}
+
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label for="name"
+                        class="block text-sm md:text-base text-gray-700 dark:text-gray-400 font-medium">Name</label>
+                    <input type="text" name="name" id="name"
+                        class="block w-full text-sm md:text-base bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 px-4 py-2 focus:outline focus:outline-gray-700 dark:focus:outline dark:focus:outline-white"
+                        placeholder="Your Name" required>
+                </div>
+                <div class="space-y-2">
+                    <label for="email"
+                        class="block text-sm md:text-base text-gray-700 dark:text-gray-400 font-medium">Email</label>
+                    <input type="email" name="email" id="email"
+                        class="block w-full text-sm md:text-base bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 px-4 py-2 focus:outline focus:outline-gray-700 dark:focus:outline dark:focus:outline-white"
+                        placeholder="your Email" required>
+                </div>
+                <div class="space-y-2">
+                    <label for="id_message"
+                        class="block text-sm md:text-base text-gray-700 dark:text-gray-400 font-medium">Message</label>
+                    <textarea name="message" id="id_message" cols="30" rows="6"
+                        class="block w-full text-sm md:text-base bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 px-4 py-2 focus:outline focus:outline-gray-700 dark:focus:outline dark:focus:outline-white"
+                        placeholder="Your Message" required></textarea>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button type="submit" class="w-full rounded-lg text-white dark:text-black hover:text-white dark:hover:text-white bg-black dark:bg-white hover:bg-zinc-600 dark:hover:bg-zinc-900 active:bg-zinc-400 dark:active:bg-zinc-400 px-4 py-2 font-medium transition duration-200">
+                    Send Message
+                </button>
+            </div>
+        </form>
+    </div>
+
+</section>
+{% endblock content %}

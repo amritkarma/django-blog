@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block canonical %}{{HOST_DOMAIN_URL}}{{request.path}}{% endblock canonical %}
+{% block styles %}
+<link rel="preload" href="{% if object.image %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endif %}" as="image" />
+{% endblock styles %}
+{% block scripts %}
+{% endblock scripts %}
+
+{% block title %}{% if object.seo_title %}{{ object.seo_title }} - Aera{% else %}{{object.title}} -
+Aera{% endif %}{% endblock title %}
+{% block description %}{% if object.seo_description %}{{ object.seo_description }}{% else %}
+{{object.title}} - Aera
+{% endif %}{% endblock description %}
+{% block robots %}index follow{% endblock robots %}
+<!-- Open Graph / Facebook -->
+{% block fbtype %}article{% endblock fbtype %}
+{% block fburl %}{{HOST_DOMAIN_URL}}{{object.get_absolute_url}}{% endblock fburl %}
+{% block fbtitle %}{% if object.seo_title %}{{ object.seo_title }} - Aera{% else %}{{object.title}} -
+Aera{% endif %}{% endblock fbtitle %}
+{% block fbdescription %}{% if object.seo_description %}{{ object.seo_description }}{% else %}{{object.title}} - Aera
+{% endif %}{% endblock fbdescription %}
+{% block fbimage %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endblock fbimage %}
+<!-- Twitter -->
+{% block twittercard %}summary_large_image{% endblock twittercard %}
+{% block twitterurl %}{{HOST_DOMAIN_URL}}{{object.get_absolute_url}}{% endblock twitterurl %}
+{% block twittertitle %}{% if object.seo_title %}{{ object.seo_title }} - Aera{% else %}{{object.title}} -
+Aera{% endif %}{% endblock twittertitle %}
+{% block twitterdescription %}{% if object.seo_description %}{{ object.seo_description }}{% else %}{{object.title}} -
+Aera
+{% endif %}{% endblock twitterdescription %}
+{% block twitterimage %}{{HOST_DOMAIN_URL}}{{object.image.url}}{% endblock twitterimage %}
+
+
+
+{% block content %}
+
+<section class="py-16 max-w-6xl mx-auto px-4 lg:px-0 xl:px-0">
+    <header class="py-6 space-y-4">
+        <h1 class="text-4xl md:text-6xl font-bold">{{object.title}} </h1>
+        <p class="flex flex-row items-center gap-4">
+            <span class="text-sm dark:text-zinc-200">Post by {{object.user.username}}</span>
+            <span
+                class="text-sm md:text-sm font-medium dark:text-zinc-200 bg-zinc-700/60 dark:bg-zinc-700/60 px-4 py-2 rounded-full">
+                {{object.created|timesince}} Ago
+            </span>
+        </p>
+        <img class="w-full h-[700px] rounded-xl object-cover object-center group-hover:scale-110 transition-all duration-200"
+            src="{% if object.image %}{{object.image.url}}{% endif %}" alt="{{ object.title }}" loading="eager">
+    </header>
+
+    <article class="">
+        <div class="">
+            {{ object.description|safe }}
+        </div>
+    </article>
+</section>
+
+<section class="py-8 max-w-6xl mx-auto px-4 lg:px-0 xl:px-0 flex justify-between items-center">
+    {% if previous_post %}
+    <a href="{{ previous_post.get_absolute_url }}" class="text-zinc-200 hover:text-zinc-400 hover:underline">
+        <img src="{{ previous_post.image.url }}" alt="" class="w-60 h-40 m-2 object-cover rounded-2xl">
+        ← {{ previous_post.title|truncatechars:40 }}
+    </a>
+    {% else %}
+    <span></span>
+    {% endif %}
+
+    {% if next_post %}
+    <a href="{{ next_post.get_absolute_url }}" class="text-zinc-200 hover:text-zinc-400 hover:underline">
+        <img src="{{ next_post.image.url }}" alt="" class="w-60 h-40 m-2 object-cover rounded-2xl">
+        {{ next_post.title|truncatechars:40 }} →
+    </a>
+    {% endif %}
+</section>
+
+<section class="max-w-6xl mx-auto mt-12 space-y-8">
+    <h3 class="text-2xl font-semibold text-zinc-800 dark:text-white mb-4">Comments</h3>
+
+    {% for comment in comments %}
+    <div class="rounded-md p-4 shadow-sm border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+        <div class="mb-2">
+            <span class="font-bold text-zinc-700 dark:text-white">{{ comment.user }}</span>
+            <p class="text-zinc-800 dark:text-white mt-1">{{ comment.comment|safe }}</p>
+        </div>
+
+        <!-- Show Replies Button (if there are replies) -->
+        {% if comment.replies.all %}
+        <button type="button" onclick="toggleReplies({{ comment.id }})" id="toggle-replies-btn-{{ comment.id }}"
+            class="text-sm dark:text-white hover:underline mt-2">
+            Show Replies ({{ comment.replies.count }})
+        </button>
+        {% endif %}
+
+        <!-- Replies (hidden by default) -->
+        <div id="replies-{{ comment.id }}"
+            class="hidden ml-6 mt-4 pl-4 border-l-2 border-zinc-300 dark:border-zinc-600 space-y-4">
+            {% for reply in comment.replies.all %}
+            <div>
+                <span class="font-medium text-zinc-600 dark:text-white">{{ reply.user }}</span>
+                <p class="text-zinc-700 dark:text-white mt-1">{{ reply.comment|safe }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Reply Button & Hidden Reply Form -->
+        {% if user.is_authenticated %}
+        <button type="button" onclick="toggleReplyForm({{ comment.id }})"
+            class="mt-2 text-sm dark:text-white hover:underline">
+            Reply
+        </button>
+
+        <div id="reply-form-{{ comment.id }}" class="hidden mt-4 ml-6">
+            <form method="post" class="space-y-2">
+                {% csrf_token %}
+                <textarea name="comment" rows="4"
+                    class="w-full px-4 py-3 rounded-2xl border border-zinc-300 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                    placeholder="Write your reply..."></textarea>
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <button type="submit"
+                    class="text-sm bg-zinc-600 hover:bg-zinc-700 text-white px-4 py-2 rounded transition">
+                    Post Reply
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-zinc-500 dark:text-white">No comments yet. Be the first to comment.</p>
+    {% endfor %}
+
+    <!-- New Comment Form -->
+    <div class="mt-10">
+        {% if user.is_authenticated %}
+        <h3 class="text-xl font-semibold text-zinc-800 dark:text-white mb-2">Leave a Comment</h3>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <textarea name="comment" id="main-comment" rows="4"
+                    class="w-full px-4 py-3 rounded-2xl border border-zinc-300 dark:border-zinc-600 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                    placeholder="Write your comment..."></textarea>
+            </div>
+            <button type="submit"
+                class="bg-zinc-600 hover:bg-zinc-700 text-white font-medium px-6 py-2 rounded transition">
+                Post Comment
+            </button>
+        </form>
+        {% else %}
+        <p class="text-zinc-600 dark:text-zinc-300">
+            Please <a href="{% url 'auth:login' %}" class="text-zinc-500 hover:underline">log in</a> to comment.
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+{% include 'posts/subscribe.html' %}
+
+<section class="py-16 max-w-6xl mx-auto px-4 lg:px-0 xl:px-0">
+    <h2 class="text-2xl font-bold mb-6">Related Posts</h2>
+
+    {% if related_posts %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for post in related_posts %}
+        <a href="{% url 'posts:postdetail' post.slug %}" title="{{ post.title }}" class="group">
+            <article class="relative rounded-lg overflow-hidden">
+                <img class="w-full h-80 object-cover object-center group-hover:scale-110 transition-all duration-200"
+                    src="{% if post.image %}{{post.image.url}}{% endif %}" alt="{{ post.title }}">
+                <div class="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent">
+                </div>
+                <div class="absolute bottom-0 left-0 px-4 py-4">
+                    <div class="mt-2 flex flex-col items-start gap-2">
+                        <div class="flex flex-row items-center gap-2">
+                            <img class="w-10 h-10 object-cover object-center rounded-full ring-2 ring-zinc-600"
+                                src="{% if post.user.profile.profile_image %}{{post.user.profile.profile_image.url}}{% endif %}"
+                                alt="{{ post.title }}">
+                            <span class="text-zinc-200 font-medium">{{ post.author }}</span>
+                        </div>
+                        <div class="flex flex-row items-center gap-2">
+                            <p class="text-xs text-zinc-200 font-medium bg-zinc-700/60 px-2 py-1 rounded-full">
+                                {{ post.created|timesince }} Ago</p>
+                            {% if post.category %}<p
+                                class="text-xs text-zinc-200 bg-zinc-700/60 px-2 py-1 rounded-full font-medium">
+                                {{ post.category }}</p>{% endif %}
+                        </div>
+                    </div>
+                    <h3 class="text-xl text-white group-hover:text-zinc-400 font-medium mt-2 cursor-pointer">
+                        {{ post.title|truncatechars:50 }}</h3>
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-zinc-500">No related posts found.</p>
+    {% endif %}
+</section>
+{% endblock content %}

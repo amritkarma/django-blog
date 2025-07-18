@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - Aera{% endblock title %}
+
+{% block content %}
+<div class="px-6 py-6">
+    <div class="">
+        <div class="px-6 py-2 flex flex-col items-start justify-center rounded-xl shadow-lg">
+            <h2 class="text-lg text-gray-950 dark:text-white font-semibold">Profile</h2>
+        </div>
+        <div class="mt-6 w-full px-4 py-4 dark:text-white rounded-xl">
+            <div class="w-full md:max-w-2xl mx-auto dark:text-white  md:px-6 md:py-6 text-black">
+                <form action="" method="post" enctype="multipart/form-data" class="mx-auto flex flex-col gap-4">
+                    {% csrf_token %}
+                    {{form.errors}}
+                    <div class="space-y-1">
+                        <label for="profile_image" class="block text-sm font-medium">Profile Image</label>
+                        {% if form.instance.profile_image %}
+                        <img src="{{ form.instance.profile_image.url }}" alt="Current Profile Image"
+                            class="mb-2 w-12 h-12 object-cover rounded-full">
+                        {% endif %}
+                        <input type="file" alt="" name="profile_image" id="profile_image" accept=".jpg, .jpeg, .png, .webp, image/jpeg, image/png, image/webp"
+                            class="w-fit block rounded-lg border border-gray-400 px-2 py-2" placeholder="image">
+                    </div>
+                    <div class="space-y-1">
+                        <label for="bio" class="block text-sm font-medium">Bio</label>
+                        <textarea name="bio" id="bio" cols="30" rows="10" class="w-full block rounded-lg border border-gray-400 px-2 py-2" placeholder="Write about your self">{{ form.instance.bio }}</textarea>
+                    </div>
+                    <hr class="">
+                    <div class="col-span-full place-self-end flex items-center space-x-4">
+                        <button type="submit"
+                            class="w-full rounded-lg bg-gray-950 hover:bg-gray-900 px-4 py-2 text-white font-semibold">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

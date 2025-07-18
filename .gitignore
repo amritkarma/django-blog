@@ -1,0 +1,48 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+venv
+env
+.env
+.env.* 
+*.env
+venv/
+env/
+ENV/
+.venv/
+
+# Database
+*.db
+*sqlite3
+
+# Media files (e.g., uploaded files during development)
+media
+media/
+media/*
+
+# Static file collections
+staticfiles/
+static/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
