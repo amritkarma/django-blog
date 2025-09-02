@@ -5,6 +5,7 @@ from posts.feed import PostFeed
 
 
 from posts.views import (
+    HomePageView,
     AdstxtView,
     CategoryDetailView,
     ContactView,
@@ -24,12 +25,16 @@ sitemaps_posts = {
 }
 
 urlpatterns = [
-    path("", PostsView.as_view(), name="posts"),
+    path("", HomePageView.as_view(), name="home"),
+    path("posts/", PostsView.as_view(), name="posts"),
     path("contact/", ContactView.as_view(), name="contact"),
     path("subscribe/", SubScribeView.as_view(), name="subscribe"),
     path("privacy/", PrivacyPolicyView.as_view(), name="privacy"),
     path("rss/", PostFeed(), name="rss"),
-    path("category/<slug:slug>/", CategoryDetailView.as_view(), name="categorydetail"),
+    path("category/<slug:slug>/",
+         CategoryDetailView.as_view(),
+         name="categorydetail"
+         ),
     path("<slug:slug>/", PostDetailView.as_view(), name="postdetail"),
     path(
         "sitemap.xml",
