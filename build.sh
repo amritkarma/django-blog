@@ -1,9 +1,11 @@
 #!/bin/bash
+set -euo pipefail
 
-python3 -m pip install -U pip setuptools wheel
-python3 -m pip install -r requirements.txt
-python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py collectstatic --noinput
-python3 manage.py create_superuser
+python -m venv .venv
+source .venv/bin/activate
 
+python -m pip install --no-cache-dir -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py create_superuser

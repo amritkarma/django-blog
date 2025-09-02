@@ -16,6 +16,26 @@ from posts.utils import get_ip_address
 # Create your views here.
 
 
+class HomePageView(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        featured_post = Post.objects.filter(status="Publish").order_by("-created").first()
+        recent_posts = Post.objects.filter(status="Publish")
+
+        if featured_post:
+            recent_posts = recent_posts.exclude(id=featured_post.id)
+
+        recent_posts = recent_posts.order_by("-created")[:6]
+
+        context["featured_post"] = featured_post
+        context["recent_posts"] = recent_posts
+
+        return context
+
+
 class PostsView(ListView):
     model = Post
     template_name = "posts/posts.html"

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block canonical %}{{ HOST_DOMAIN_URL }}{{ request.path }}{% endblock canonical %}
+{% block styles %}{% endblock styles %}
+{% block scripts %}{% endblock scripts %}
+
+{% block title %}Welcome to Aera{% endblock title %}
+{% block description %}Aera is your coding companion. Learn, build, and grow with our latest articles.{% endblock description %}
+{% block robots %}index, follow{% endblock robots %}
+
+{% block fbtype %}website{% endblock fbtype %}
+{% block fburl %}{{ HOST_DOMAIN_URL }}{% endblock fburl %}
+{% block fbtitle %}Welcome to Aera{% endblock fbtitle %}
+{% block fbdescription %}Aera is your coding companion. Learn, build, and grow with our latest articles.{% endblock fbdescription %}
+{% block fbimage %}{{ HOST_DOMAIN_URL }}{% static 'images/Logo-Aera.png' %}{% endblock fbimage %}
+
+{% block twittercard %}summary_large_image{% endblock twittercard %}
+{% block twitterurl %}{{ HOST_DOMAIN_URL }}{% endblock twitterurl %}
+{% block twittertitle %}Welcome to Aera{% endblock twittertitle %}
+{% block twitterdescription %}Aera is your coding companion. Learn, build, and grow with our latest articles.{% endblock twitterdescription %}
+{% block twitterimage %}{{ HOST_DOMAIN_URL }}{% static 'images/Logo-Aera.png' %}{% endblock twitterimage %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+{% if featured_post %}
+<section class="bg-white dark:bg-black py-16">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0">
+    <div class="relative rounded-xl overflow-hidden shadow-lg group">
+      <a href="{% url 'posts:postdetail' featured_post.slug %}" class="block relative aspect-video">
+        {% if featured_post.image %}
+        <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}"
+             class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        {% endif %}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        <div class="absolute bottom-0 p-6 text-white">
+          <div class="flex items-center gap-4 mb-2">
+            {% if featured_post.user.profile.profile_image %}
+            <img src="{{ featured_post.user.profile.profile_image.url }}" alt="author"
+                 class="w-10 h-10 rounded-full border border-white">
+            {% endif %}
+            <span class="font-medium">{{ featured_post.author }}</span>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-semibold">{{ featured_post.title|truncatechars:70 }}</h1>
+          <p class="text-sm text-zinc-300 mt-1">
+            {{ featured_post.created|date:"F d, Y" }}
+            {% if featured_post.category %} • {{ featured_post.category.name }}{% endif %}
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA SECTION -->
+<section class="py-20 bg-white dark:bg-black">
+  <div class="max-w-5xl mx-auto px-4 text-center">
+    <h1 class="text-5xl font-bold mb-4">Welcome to Aera Blog</h1>
+    <p class="text-lg text-zinc-600 dark:text-zinc-300 mb-8">
+      Dive into tutorials, insights, and expert tips to boost your development journey.
+    </p>
+    <a href="{% url 'posts:posts' %}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+      Explore All Posts
+    </a>
+  </div>
+</section>
+
+<!-- RECENT POSTS (Updated Card Style) -->
+<section class="py-16">
+  <div class="max-w-7xl mx-auto px-4 lg:px-0 xl:px-0">
+    <h2 class="text-3xl font-semibold mb-6">Recent Posts</h2>
+    {% if recent_posts %}
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+      {% for post in recent_posts %}
+      <div class="relative rounded-xl bg-white dark:bg-black dark:text-white border border-zinc-200 dark:border-zinc-900 transition duration-200 shadow-lg hover:shadow-2xl overflow-hidden">
+        <a href="{% url 'posts:postdetail' post.slug %}" title="{{ post.title }}" class="group">
+          <article class="relative rounded-lg overflow-hidden">
+            {% if post.image %}
+            <img class="w-full h-80 object-cover object-center group-hover:scale-110 transition-all duration-200"
+                 src="{{ post.image.url }}" alt="{{ post.title }}">
+            {% endif %}
+            <div class="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 px-4 py-4">
+              <div class="mt-2 flex flex-col items-start gap-2">
+                <div class="flex flex-row items-center gap-2">
+                  {% if post.user.profile.profile_image %}
+                  <img class="w-10 h-10 object-cover object-center rounded-full ring-2 ring-zinc-600"
+                       src="{{ post.user.profile.profile_image.url }}" alt="{{ post.title }}">
+                  {% endif %}
+                  <span class="text-zinc-200 font-medium">{{ post.author }}</span>
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                  <p class="text-xs text-zinc-200 font-medium bg-zinc-700/60 px-2 py-1 rounded-full">
+                    {{ post.created|timesince }} ago</p>
+                  {% if post.category %}
+                  <p class="text-xs text-zinc-200 bg-zinc-700/60 px-2 py-1 rounded-full font-medium">
+                    {{ post.category }}</p>
+                  {% endif %}
+                </div>
+              </div>
+              <h3 class="text-xl text-white group-hover:text-zinc-400 font-medium mt-2 cursor-pointer">
+                {{ post.title|truncatechars:50 }}</h3>
+            </div>
+          </article>
+        </a>
+      </div>
+      {% empty %}
+      <div class="text-center text-zinc-500 mt-8 col-span-full">
+        <p>No recent posts available yet. Check back soon!</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-zinc-500">No recent posts available yet. Check back soon!</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock content %}
