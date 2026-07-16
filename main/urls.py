@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("accounts.urls")),
     path("", include("posts.urls")),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 handler404 = "posts.views.error_404_view"

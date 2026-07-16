@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from posts.forms import PostForm
 from posts.models import AdsTxt, Contact, Post, PostCategory, PostComments, RobotsTxt, Subscribe
 
 # Register your models here.
@@ -12,6 +13,7 @@ class PostComponentsInline(admin.StackedInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+    form = PostForm
     list_display = (
         "title",
         "status",

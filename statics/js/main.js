@@ -131,18 +131,20 @@ function toggleReplies(commentId) {
 
 const notifications = document.querySelectorAll('.notifications')
 
-if (notifications) {
+if (notifications.length) {
   notifications.forEach(notification => {
-    notificationclosebutton = notification.querySelector('.notification-close-button')
-    notificationinterval = setTimeout(() => {
-      notification.classList.add('opacity-0', 'translate-x-full')
-      clearTimeout(notificationclosebutton)
-    }, 6000)
-    notificationclosebutton.addEventListener('click', () => {
+    const notificationclosebutton = notification.querySelector('.notification-close-button')
+    const dismissNotification = () => {
       notification.classList.add('opacity-0', 'translate-x-full')
       notification.addEventListener('transitionend', () => {
         notification.remove()
-      })
+      }, { once: true })
+    }
+    const notificationinterval = setTimeout(dismissNotification, 6000)
+
+    notificationclosebutton.addEventListener('click', () => {
+      clearTimeout(notificationinterval)
+      dismissNotification()
     })
   })
 }

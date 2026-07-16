@@ -1,26 +1,42 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField
-from django.core.validators import ValidationError
-from django.core import validators
-from django.contrib.auth.password_validation import validate_password
+from django_ckeditor_5.widgets import CKEditor5Widget
 
-from posts.models import Contact, Subscribe, PostComments
+from posts.models import Contact, Post, Subscribe, PostComments
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = [
+            "title",
+            "seo_title",
+            "seo_description",
+            "slug",
+            "category",
+            "status",
+            "image",
+            "description",
+        ]
+        widgets = {
+            "description": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            )
+        }
 
 
 class ContactForm(forms.ModelForm):
-
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'message',]
+        fields = ["name", "email", "message"]
+
 
 class SubscribeForm(forms.ModelForm):
-
     class Meta:
         model = Subscribe
-        fields = ['email',]
+        fields = ["email"]
+
 
 class PostCommentsForm(forms.ModelForm):
-
     class Meta:
         model = PostComments
-        fields = ['comment']
+        fields = ["comment"]

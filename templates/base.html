@@ -58,11 +58,11 @@
 
 <body class="text-black bg-gray-100 dark:bg-zinc-900 dark:text-white transition-all duration-200 antialiased">
     <div
-        class="notifications-panel fixed inset-0 px-6 py-4 md:px-6 md:py-4 bg-transparent flex flex-col gap-4 items-end justify-start pointer-events-none z-50">
+        class="notifications-panel fixed flex flex-col gap-4 items-end pointer-events-none z-50" style="top: 5rem; right: 1rem;">
         {% if messages %}
         {% for message in messages %}
         <div
-            class="notifications px-6 py-4 md:py-6 bg-white dark:bg-zinc-900 flex flex-row gap-4 items-center border border-gray-100 dark:border-gray-400 pointer-events-auto shadow-lg rounded-lg opacity-1 translate-x-0 transition-all duration-200">
+            class="notifications px-6 py-4 md:py-6 bg-white text-black dark:bg-zinc-900 dark:text-white flex flex-row gap-4 items-center border border-gray-100 dark:border-gray-400 pointer-events-auto shadow-lg rounded-lg translate-x-0 transition-all duration-200">
             <div class="flex flex-row gap-2 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4"
                     stroke="currentColor" class="w-6 h-6 text-green-400 flex-shrink-0 rotate-12 transform">
@@ -92,7 +92,7 @@
             <!-- navigation logo -->
             <div class="max-w-7xl mx-auto flex items-center justify-between py-2">
                 <div class="text-xl font-medium">
-                    <a href="{% url 'posts:posts' %}" class="flex items-center gap-2">
+                    <a href="{% url 'posts:home' %}" class="flex items-center gap-2">
                         <img src="{% static 'images/Logo-Aera.png' %}" alt="Aera Logo" width="50" height="50"
                             class="w-[45px] h-[45px] aspect-auto object-cover object-center rounded" loading="eager">
                         <span class="text-2xl">Aera</span>

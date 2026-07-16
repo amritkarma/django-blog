@@ -39,7 +39,7 @@ Aera{% endblock twitterdescription %}
 
         <form action="" method="post" id="contact-form" class="max-w-md mx-auto mt-7">
             {% csrf_token %}
-            {{ form.fields.errors }}
+            {{ form.errors }}
 
             <div class="space-y-6">
                 <div class="space-y-2">
